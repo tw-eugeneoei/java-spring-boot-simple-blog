@@ -1,1 +1,1 @@
-# Java Spring Book Simple Blog
+# Java Spring Boot Simple Blog
