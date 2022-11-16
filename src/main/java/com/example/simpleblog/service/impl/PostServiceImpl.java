@@ -1,6 +1,7 @@
 package com.example.simpleblog.service.impl;
 
 import com.example.simpleblog.dto.PostDto;
+import com.example.simpleblog.dto.PostResponse;
 import com.example.simpleblog.entity.Post;
 import com.example.simpleblog.exception.ResourceNotFoundException;
 import com.example.simpleblog.repository.PostRepository;
@@ -14,12 +15,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-// @Service annotation indicates that the class is a service class and it is available
-// for autodetection during component scanning and will be injected or autowired to other classes
+// @Service annotation indicates that the class is a service class, and it is available
+// for auto-detection during component scanning and will be injected or autowired to other classes
 @Service
 public class PostServiceImpl implements PostService {
 
-    // if class is configured as a spring bean and it has only one constructor, we can omit @Autowired annotation
+    // if class is configured as a spring bean, and it has only one constructor, we can omit @Autowired annotation
     public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
@@ -34,8 +35,7 @@ public class PostServiceImpl implements PostService {
         Post newPost = postRepository.save(post); // save returns an entity
 
         // convert entity to dto before returning to controller
-        PostDto postResponse = mapToDTO(newPost);
-        return postResponse;
+        return mapToDTO(newPost);
     }
 
     // convert Post DTO to Post entity
@@ -58,13 +58,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getPosts(int pageNo, int pageSize) {
+    public PostResponse getPosts(int pageNo, int pageSize) {
         // Pageable is zero based pagination
         int offsetPageNo = pageNo - 1;
         Pageable pageable = PageRequest.of(offsetPageNo, pageSize); // create Pageable instance
         Page<Post> posts = postRepository.findAll(pageable); // returns a page of entities
         List<Post> listOfPosts = posts.getContent(); // get content from page object
-        return listOfPosts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+
+        // List<PostDto> results = listOfPosts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+        List<PostDto> results = listOfPosts.stream().map(this::mapToDTO).collect(Collectors.toList()); // same as above
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setResults(results);
+        postResponse.setPageNo(posts.getNumber() + 1);
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalCount(posts.getTotalElements());
+        postResponse.setTotalPages(posts.getTotalPages());
+        postResponse.setHasNextPage(posts.hasNext());
+        return postResponse;
     }
 
     @Override

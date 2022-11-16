@@ -1,6 +1,7 @@
 package com.example.simpleblog.controller;
 
 import com.example.simpleblog.dto.PostDto;
+import com.example.simpleblog.dto.PostResponse;
 import com.example.simpleblog.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,19 +25,19 @@ public class PostController {
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
         PostDto post = postService.createPost(postDto);
         return new ResponseEntity<>(post, HttpStatus.CREATED);
-        // // if you want to set the Location property in reponse headers
+        // // if you want to set the Location property in response headers
         // URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{postId}").buildAndExpand(post.getId()).toUri();
         // return ResponseEntity.created(location).body(post); // this sets "Location" headers of the new resource
     }
 
     @GetMapping
-    public ResponseEntity<List<PostDto>> getPosts(
+    public ResponseEntity<PostResponse> getPosts(
             @RequestParam(defaultValue = "1", required = false) int pageNo,
             @RequestParam(defaultValue = "10", required = false) int pageSize
     ) {
-        List<PostDto> posts = postService.getPosts(pageNo, pageSize);
+        PostResponse postResponse = postService.getPosts(pageNo, pageSize);
         // return new ResponseEntity<>(posts, HttpStatus.OK);
-        return ResponseEntity.ok(posts);
+        return ResponseEntity.ok(postResponse);
     }
 
     @GetMapping("{postId}")
