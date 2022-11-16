@@ -39,7 +39,6 @@ public class PostController {
             @RequestParam(defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir
     ) {
         PostResponse postResponse = postService.getPosts(pageNo, pageSize, sortBy, sortDir);
-        // return new ResponseEntity<>(posts, HttpStatus.OK);
         return ResponseEntity.ok(postResponse);
     }
 
