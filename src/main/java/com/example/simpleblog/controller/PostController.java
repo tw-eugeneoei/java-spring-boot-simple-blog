@@ -3,6 +3,7 @@ package com.example.simpleblog.controller;
 import com.example.simpleblog.dto.PostDto;
 import com.example.simpleblog.dto.PostResponse;
 import com.example.simpleblog.service.PostService;
+import com.example.simpleblog.utils.AppConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +33,10 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<PostResponse> getPosts(
-            @RequestParam(defaultValue = "1", required = false) int pageNo,
-            @RequestParam(defaultValue = "10", required = false) int pageSize,
-            @RequestParam(defaultValue = "title", required = false) String sortBy,
-            @RequestParam(defaultValue = "asc", required = false) String sortDir
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_NO, required = false) int pageNo,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir
     ) {
         PostResponse postResponse = postService.getPosts(pageNo, pageSize, sortBy, sortDir);
         // return new ResponseEntity<>(posts, HttpStatus.OK);
