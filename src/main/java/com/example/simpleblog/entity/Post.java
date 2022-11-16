@@ -9,9 +9,14 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.util.UUID;
 
+// @Data generates getters for all fields, a useful toString method and hashCode and equals implementations that check
+// all non-transient fields. WIll also generate setters for all non-final fields, as well as a constructor
 @Data
 @AllArgsConstructor
+// when we create a JPA entity with an argument constructor then we should also need a no argument constructor
+// because Hibernate internally uses proxies to create objects
 @NoArgsConstructor
+// @Entity to map JPA entity to MySQL database table
 @Entity
 @Table(
         name = "posts",
