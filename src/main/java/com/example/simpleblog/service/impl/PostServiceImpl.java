@@ -5,6 +5,9 @@ import com.example.simpleblog.entity.Post;
 import com.example.simpleblog.exception.ResourceNotFoundException;
 import com.example.simpleblog.repository.PostRepository;
 import com.example.simpleblog.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +25,7 @@ public class PostServiceImpl implements PostService {
     }
 
     // constructor based dependency injection
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
     @Override
     public PostDto createPost(PostDto postDto) {
@@ -55,9 +58,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getPosts() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+    public List<PostDto> getPosts(int pageNo, int pageSize) {
+        // Pageable is zero based pagination
+        int offsetPageNo = pageNo - 1;
+        Pageable pageable = PageRequest.of(offsetPageNo, pageSize); // create Pageable instance
+        Page<Post> posts = postRepository.findAll(pageable); // returns a page of entities
+        List<Post> listOfPosts = posts.getContent(); // get content from page object
+        return listOfPosts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
     }
 
     @Override
@@ -83,11 +90,7 @@ public class PostServiceImpl implements PostService {
     public void deletePostById(UUID id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         postRepository.delete(post);
+
+        // postRepository.deleteById(id);
     }
-
-    // @Override
-    // public void deletePostById(UUID id) {
-    //    postRepository.deleteById(id);
-    // }
-
 }
