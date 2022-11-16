@@ -34,9 +34,10 @@ public class PostController {
     public ResponseEntity<PostResponse> getPosts(
             @RequestParam(defaultValue = "1", required = false) int pageNo,
             @RequestParam(defaultValue = "10", required = false) int pageSize,
-            @RequestParam(defaultValue = "title", required = false) String sortBy
+            @RequestParam(defaultValue = "title", required = false) String sortBy,
+            @RequestParam(defaultValue = "asc", required = false) String sortDir
     ) {
-        PostResponse postResponse = postService.getPosts(pageNo, pageSize, sortBy);
+        PostResponse postResponse = postService.getPosts(pageNo, pageSize, sortBy, sortDir);
         // return new ResponseEntity<>(posts, HttpStatus.OK);
         return ResponseEntity.ok(postResponse);
     }

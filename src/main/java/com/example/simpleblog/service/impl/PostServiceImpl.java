@@ -59,14 +59,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getPosts(int pageNo, int pageSize, String sortBy) {
-        // Pageable is zero based pagination
-        int offsetPageNo = pageNo - 1;
-
-
+    public PostResponse getPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+        int offsetPageNo = pageNo - 1; // Pageable is zero based pagination
         // Pageable pageable = PageRequest.of(offsetPageNo, pageSize); // create Pageable instance with page number and page size
-        Pageable pageable = PageRequest.of(offsetPageNo, pageSize, Sort.by(sortBy)); // create Pageable instance with page number, page size, and sort value
-        // Pageable pageable = PageRequest.of(offsetPageNo, pageSize, Sort.by(sortBy).descending());
+        // Pageable pageable = PageRequest.of(offsetPageNo, pageSize, Sort.by(sortBy)); // create Pageable instance with page number, page size, and sort value
+        // create Pageable instance with page number, page size, and sort value with sort direction
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(offsetPageNo, pageSize, sort);
 
         Page<Post> posts = postRepository.findAll(pageable); // returns a page of entities
         List<Post> listOfPosts = posts.getContent(); // get content from page object
