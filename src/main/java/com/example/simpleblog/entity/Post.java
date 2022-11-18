@@ -7,6 +7,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 // @Data generates getters for all fields, a useful toString method and hashCode and equals implementations that check
@@ -23,9 +25,7 @@ import java.util.UUID;
         uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})}
 )
 public class Post {
-    @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // private Long id;
+    @Id // to indicate that this column is the primary key
     @Type(type = "uuid-char")
     @GeneratedValue(generator = "UUID")
     private UUID id;
@@ -38,4 +38,9 @@ public class Post {
 
     @Column(nullable = false)
     private String content;
+
+    // orphanRemoval means when parent is removed, child is also removed
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    // set does not allow duplicates
+    private Set<Comment> comments = new HashSet<>();
 }
