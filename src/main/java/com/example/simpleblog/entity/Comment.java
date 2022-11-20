@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.repository.Temporal;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,6 +32,5 @@ public class Comment {
     private Post post;
 
     @Column(nullable = false)
-    @CreatedDate
-    private Date created_at;
+    private Date createdAt = new Date();
 }

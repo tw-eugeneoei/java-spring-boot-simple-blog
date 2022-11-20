@@ -11,5 +11,5 @@ public class CommentDto {
     private UUID id;
     private String content;
     private Post post;
-    private Date created_at;
+    private Date createdAt;
 }

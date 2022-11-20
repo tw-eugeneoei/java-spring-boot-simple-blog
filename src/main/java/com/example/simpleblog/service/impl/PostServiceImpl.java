@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
 
+    // constructor based dependency injection
+    private final PostRepository postRepository;
+
     // if class is configured as a spring bean, and it has only one constructor, we can omit @Autowired annotation
     public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
-
-    // constructor based dependency injection
-    private final PostRepository postRepository;
 
     @Override
     public PostDto createPost(PostDto postDto) {
