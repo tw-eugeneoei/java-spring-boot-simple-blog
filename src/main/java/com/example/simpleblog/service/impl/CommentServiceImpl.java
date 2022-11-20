@@ -9,10 +9,16 @@ import com.example.simpleblog.exception.ResourceNotFoundException;
 import com.example.simpleblog.repository.CommentRepository;
 import com.example.simpleblog.repository.PostRepository;
 import com.example.simpleblog.service.CommentService;
+import com.example.simpleblog.utils.AppConstants;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -30,7 +36,6 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = mapToEntity(commentDto);
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
         comment.setPost(post);
-        // comment.setCreatedAt(new Date());
         Comment newComment = commentRepository.save(comment);
         return mapToDTO(newComment);
     }
@@ -51,11 +56,38 @@ public class CommentServiceImpl implements CommentService {
         return commentDto;
     }
 
-//    @Override
-//    public CommentResponse getComments(UUID postId, int pageNo, int pageSize) {
-//        return null;
-//    }
-//
+    @Override
+    public CommentResponse getAllCommentsByPostId(UUID postId, int pageNo, int pageSize) {
+        int offsetPageNo = pageNo - 1;
+        Pageable pageable = PageRequest.of(
+                offsetPageNo,
+                pageSize,
+                Sort.by("createdAt").descending()
+        );
+//        Page<Comment> comments = commentRepository.findAll(pageable);
+//        List<Comment> listOfComments = comments.getContent();
+
+//        List<CommentDto> results = listOfComments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
+
+        List<Comment> listOfComments = commentRepository.findAllCommentsByPostId(postId);
+        List<CommentDto> results = listOfComments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
+
+        CommentResponse commentResponse = new CommentResponse(
+                results,
+                1,
+                1,
+                1,
+                1,
+                false
+//                comments.getNumber() + 1,
+//                comments.getSize(),
+//                comments.getTotalElements(),
+//                comments.getTotalPages(),
+//                comments.hasNext()
+        );
+        return commentResponse;
+    }
+
 //    @Override
 //    public CommentDto getCommentById(UUID postId, UUID commentId) {
 //        return null;
