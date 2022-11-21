@@ -6,6 +6,7 @@ import com.example.simpleblog.entity.Post;
 import com.example.simpleblog.exception.ResourceNotFoundException;
 import com.example.simpleblog.repository.PostRepository;
 import com.example.simpleblog.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,11 +23,13 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     // constructor based dependency injection
-    private final PostRepository postRepository;
+    private PostRepository postRepository;
+    private ModelMapper mapper;
 
     // if class is configured as a spring bean, and it has only one constructor, we can omit @Autowired annotation
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
         this.postRepository = postRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -39,22 +42,15 @@ public class PostServiceImpl implements PostService {
         return mapToDTO(newPost);
     }
 
-    // convert Post DTO to Post entity
+    // convert Post DTO to Post entity using ModelMapper
     private Post mapToEntity(PostDto postDto) {
-        Post post = new Post();
-        post.setTitle(postDto.getTitle());
-        post.setDescription(postDto.getDescription());
-        post.setContent(postDto.getContent());
+        Post post = mapper.map(postDto, Post.class);
         return post;
     }
 
-    // convert Post entity to Post DTO
+    // convert Post entity to Post DTO using ModelMapper
     private PostDto mapToDTO(Post post) {
-        PostDto postDto = new PostDto();
-        postDto.setId(post.getId());
-        postDto.setTitle(post.getTitle());
-        postDto.setDescription(post.getDescription());
-        postDto.setContent(post.getContent());
+        PostDto postDto = mapper.map(post, PostDto.class);
         return postDto;
     }
 
