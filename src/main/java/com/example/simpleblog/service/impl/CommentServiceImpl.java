@@ -2,20 +2,16 @@ package com.example.simpleblog.service.impl;
 
 import com.example.simpleblog.dto.CommentDto;
 import com.example.simpleblog.dto.CommentResponse;
-import com.example.simpleblog.dto.PostDto;
 import com.example.simpleblog.entity.Comment;
 import com.example.simpleblog.entity.Post;
-import com.example.simpleblog.exception.BlogAPIException;
 import com.example.simpleblog.exception.ResourceNotFoundException;
 import com.example.simpleblog.repository.CommentRepository;
 import com.example.simpleblog.repository.PostRepository;
 import com.example.simpleblog.service.CommentService;
-import com.example.simpleblog.utils.AppConstants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
                 Sort.by("createdAt").descending()
         );
 
-        Page<Comment> comments = commentRepository.findAllCommentsByPostId(postId, pageable);
+        Page<Comment> comments = commentRepository.findCommentsByPostId(postId, pageable);
         List<Comment> listOfComments = comments.getContent();
         List<CommentDto> results = listOfComments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
 
