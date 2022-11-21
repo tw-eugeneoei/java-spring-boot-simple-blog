@@ -26,15 +26,15 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<CommentResponse> getComments(
-            @PathVariable UUID postId,
-            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize
-    ) {
-        CommentResponse commentResponse = commentService.getAllCommentsByPostId(
-                postId,
-                pageSize,
-                Integer.parseInt(AppConstants.DEFAULT_PAGE_SIZE)
-        );
+    public ResponseEntity<CommentResponse> getComments(@PathVariable UUID postId, @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize) {
+        CommentResponse commentResponse = commentService.getAllCommentsByPostId(postId, pageSize, Integer.parseInt(AppConstants.DEFAULT_PAGE_SIZE));
         return ResponseEntity.ok(commentResponse);
     }
+
+    @GetMapping("{commentId}")
+    public ResponseEntity<CommentDto> getCommentById(@PathVariable UUID postId, @PathVariable UUID commentId) {
+        CommentDto comment = commentService.getCommentById(postId, commentId);
+        return ResponseEntity.ok(comment);
+    }
+
 }

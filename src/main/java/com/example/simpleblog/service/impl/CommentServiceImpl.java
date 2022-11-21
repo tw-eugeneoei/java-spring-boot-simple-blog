@@ -5,6 +5,7 @@ import com.example.simpleblog.dto.CommentResponse;
 import com.example.simpleblog.dto.PostDto;
 import com.example.simpleblog.entity.Comment;
 import com.example.simpleblog.entity.Post;
+import com.example.simpleblog.exception.BlogAPIException;
 import com.example.simpleblog.exception.ResourceNotFoundException;
 import com.example.simpleblog.repository.CommentRepository;
 import com.example.simpleblog.repository.PostRepository;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,6 +58,7 @@ public class CommentServiceImpl implements CommentService {
         return commentDto;
     }
 
+    // TODO: paginate comments
     @Override
     public CommentResponse getAllCommentsByPostId(UUID postId, int pageNo, int pageSize) {
         int offsetPageNo = pageNo - 1;
@@ -88,10 +91,25 @@ public class CommentServiceImpl implements CommentService {
         return commentResponse;
     }
 
-//    @Override
-//    public CommentDto getCommentById(UUID postId, UUID commentId) {
-//        return null;
-//    }
+    @Override
+    public CommentDto getCommentById(UUID postId, UUID commentId) {
+        // method 1
+        // Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+        // Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
+
+        // boolean doesCommentBelongToPost = comment.getPost().getId().equals(post.getId());
+        // if (!doesCommentBelongToPost) {
+        //     throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Comment does not belong to post");
+        // }
+        // return mapToDTO(comment);
+
+        // method 2
+        Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
+        if (comment == null) {
+            throw new ResourceNotFoundException("Comment", "id", commentId);
+        }
+        return mapToDTO(comment);
+    }
 //
 //    @Override
 //    public CommentDto updateCommentById(UUID postId, UUID commentId, CommentDto comment) {
