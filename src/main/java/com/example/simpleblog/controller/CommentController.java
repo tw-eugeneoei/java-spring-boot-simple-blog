@@ -31,9 +31,10 @@ public class CommentController {
     @GetMapping
     public ResponseEntity<CommentResponse> getComments(
             @PathVariable UUID postId,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_NO, required = false) int pageNo,
             @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize
     ) {
-        CommentResponse commentResponse = commentService.getAllCommentsByPostId(postId, pageSize, Integer.parseInt(AppConstants.DEFAULT_PAGE_SIZE));
+        CommentResponse commentResponse = commentService.getAllCommentsByPostId(postId, pageNo, pageSize);
         return ResponseEntity.ok(commentResponse);
     }
 

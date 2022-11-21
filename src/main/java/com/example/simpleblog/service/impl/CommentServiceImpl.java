@@ -67,26 +67,18 @@ public class CommentServiceImpl implements CommentService {
                 pageSize,
                 Sort.by("createdAt").descending()
         );
-//        Page<Comment> comments = commentRepository.findAll(pageable);
-//        List<Comment> listOfComments = comments.getContent();
 
-//        List<CommentDto> results = listOfComments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
-
-        List<Comment> listOfComments = commentRepository.findAllCommentsByPostId(postId);
+        Page<Comment> comments = commentRepository.findAllCommentsByPostId(postId, pageable);
+        List<Comment> listOfComments = comments.getContent();
         List<CommentDto> results = listOfComments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
 
         CommentResponse commentResponse = new CommentResponse(
                 results,
-                1,
-                1,
-                1,
-                1,
-                false
-//                comments.getNumber() + 1,
-//                comments.getSize(),
-//                comments.getTotalElements(),
-//                comments.getTotalPages(),
-//                comments.hasNext()
+                comments.getNumber() + 1,
+                comments.getSize(),
+                comments.getTotalElements(),
+                comments.getTotalPages(),
+                comments.hasNext()
         );
         return commentResponse;
     }
