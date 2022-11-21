@@ -58,9 +58,8 @@ public class CommentServiceImpl implements CommentService {
         return commentDto;
     }
 
-    // TODO: paginate comments
     @Override
-    public CommentResponse getAllCommentsByPostId(UUID postId, int pageNo, int pageSize) {
+    public CommentResponse getCommentsByPostId(UUID postId, int pageNo, int pageSize) {
         int offsetPageNo = pageNo - 1;
         Pageable pageable = PageRequest.of(
                 offsetPageNo,

@@ -34,7 +34,7 @@ public class CommentController {
             @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_NO, required = false) int pageNo,
             @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize
     ) {
-        CommentResponse commentResponse = commentService.getAllCommentsByPostId(postId, pageNo, pageSize);
+        CommentResponse commentResponse = commentService.getCommentsByPostId(postId, pageNo, pageSize);
         return ResponseEntity.ok(commentResponse);
     }
 
