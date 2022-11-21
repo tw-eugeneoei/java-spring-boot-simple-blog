@@ -123,8 +123,17 @@ public class CommentServiceImpl implements CommentService {
         return mapToDTO(updatedComment);
     }
 
-//    @Override
-//    public void deleteCommentById(UUID commentId) {
-//
-//    }
+    @Override
+    public void deleteCommentById(UUID postId, UUID commentId) {
+        // Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
+        // if (comment == null) {
+        //     throw new ResourceNotFoundException("Comment", "id", commentId);
+        // }
+        // commentRepository.delete(comment);
+
+        Long deleted = commentRepository.deleteByIdAndPostId(commentId, postId);
+        if (deleted == 0) {
+            throw new ResourceNotFoundException("Comment", "id", commentId);
+        }
+    }
 }

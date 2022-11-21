@@ -10,5 +10,5 @@ public interface CommentService {
     CommentResponse getAllCommentsByPostId(UUID postId, int pageNo, int pageSize);
     CommentDto getCommentById(UUID postId, UUID commentId);
     CommentDto updateCommentById(UUID postId, UUID commentId, CommentDto comment);
-    // void deleteCommentById(UUID commentId);
+    void deleteCommentById(UUID postId, UUID commentId);
 }
