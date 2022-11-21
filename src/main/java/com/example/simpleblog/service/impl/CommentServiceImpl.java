@@ -110,12 +110,19 @@ public class CommentServiceImpl implements CommentService {
         }
         return mapToDTO(comment);
     }
-//
-//    @Override
-//    public CommentDto updateCommentById(UUID postId, UUID commentId, CommentDto comment) {
-//        return null;
-//    }
-//
+
+    @Override
+    public CommentDto updateCommentById(UUID postId, UUID commentId, CommentDto commentDto) {
+        Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
+        if (comment == null) {
+            throw new ResourceNotFoundException("Comment", "id", commentId);
+        }
+
+        comment.setContent(commentDto.getContent());
+        Comment updatedComment = commentRepository.save(comment);
+        return mapToDTO(updatedComment);
+    }
+
 //    @Override
 //    public void deleteCommentById(UUID commentId) {
 //
