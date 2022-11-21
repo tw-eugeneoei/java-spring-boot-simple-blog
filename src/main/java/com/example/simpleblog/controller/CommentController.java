@@ -20,19 +20,28 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentDto> createComment(@PathVariable UUID postId, @RequestBody CommentDto commentDto) {
+    public ResponseEntity<CommentDto> createComment(
+            @PathVariable UUID postId,
+            @RequestBody CommentDto commentDto
+    ) {
         CommentDto newComment = commentService.createComment(postId, commentDto);
         return new ResponseEntity<>(newComment, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<CommentResponse> getComments(@PathVariable UUID postId, @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize) {
+    public ResponseEntity<CommentResponse> getComments(
+            @PathVariable UUID postId,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize
+    ) {
         CommentResponse commentResponse = commentService.getAllCommentsByPostId(postId, pageSize, Integer.parseInt(AppConstants.DEFAULT_PAGE_SIZE));
         return ResponseEntity.ok(commentResponse);
     }
 
     @GetMapping("{commentId}")
-    public ResponseEntity<CommentDto> getCommentById(@PathVariable UUID postId, @PathVariable UUID commentId) {
+    public ResponseEntity<CommentDto> getCommentById(
+            @PathVariable UUID postId,
+            @PathVariable UUID commentId
+    ) {
         CommentDto comment = commentService.getCommentById(postId, commentId);
         return ResponseEntity.ok(comment);
     }
@@ -48,7 +57,10 @@ public class CommentController {
     }
 
     @DeleteMapping("{commentId}")
-    public ResponseEntity<?> deleteCommentById(@PathVariable UUID postId, @PathVariable UUID commentId) {
+    public ResponseEntity<?> deleteCommentById(
+            @PathVariable UUID postId,
+            @PathVariable UUID commentId
+    ) {
         commentService.deleteCommentById(postId, commentId);
         return ResponseEntity.noContent().build();
     }
