@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 // @ControllerAdvice to handle exceptions globally
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    // handle specific exceptions
+    // handle various specific exceptions
     // @ExceptionHandler(ResourceNotFoundException.class)
     // public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest webRequest) {
     //     ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(), webRequest.getDescription(false));
@@ -24,10 +24,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-    // handle global exceptions
     @ExceptionHandler(BlogAPIException.class)
-    public ResponseEntity<ErrorDetails> BlogAPIException(BlogAPIException exception) {
+    public ResponseEntity<ErrorDetails> handleBlogAPIException(BlogAPIException exception) {
         ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    // handle global exceptions
+    @ExceptionHandler(Exception.class) // all exceptions that extend Exception class will be handled here
+    public ResponseEntity<ErrorDetails> handleGlobalException(Exception exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
