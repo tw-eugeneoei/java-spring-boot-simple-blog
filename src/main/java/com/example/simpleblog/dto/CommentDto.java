@@ -10,6 +10,8 @@ import java.util.UUID;
 public class CommentDto {
     private UUID id;
     private String content;
-    private Post post;
-    private Date createdAt;
+    private UUID postId;
+    // private Post post;
+    // private PostDto post;
+    private Date createdAt = new Date();
 }

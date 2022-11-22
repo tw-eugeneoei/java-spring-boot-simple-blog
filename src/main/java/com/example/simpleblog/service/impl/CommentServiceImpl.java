@@ -2,12 +2,14 @@ package com.example.simpleblog.service.impl;
 
 import com.example.simpleblog.dto.CommentDto;
 import com.example.simpleblog.dto.CommentResponse;
+import com.example.simpleblog.dto.PostDto;
 import com.example.simpleblog.entity.Comment;
 import com.example.simpleblog.entity.Post;
 import com.example.simpleblog.exception.ResourceNotFoundException;
 import com.example.simpleblog.repository.CommentRepository;
 import com.example.simpleblog.repository.PostRepository;
 import com.example.simpleblog.service.CommentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,10 +25,12 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final ModelMapper mapper;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, ModelMapper mapper) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -40,17 +44,13 @@ public class CommentServiceImpl implements CommentService {
 
     // convert Comment DTO to Comment entity
     private Comment mapToEntity(CommentDto commentDto) {
-        Comment comment = new Comment();
-        comment.setContent(commentDto.getContent());
+        Comment comment = mapper.map(commentDto, Comment.class);
         return comment;
     }
 
     // convert Comment entity to Comment DTO
     private CommentDto mapToDTO(Comment comment) {
-        CommentDto commentDto = new CommentDto();
-        commentDto.setId(comment.getId());
-        commentDto.setContent(comment.getContent());
-        commentDto.setCreatedAt(comment.getCreatedAt());
+        CommentDto commentDto = mapper.map(comment, CommentDto.class);
         return commentDto;
     }
 

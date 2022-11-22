@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     // constructor based dependency injection
-    private PostRepository postRepository;
-    private ModelMapper mapper;
+    private final PostRepository postRepository;
+    private final ModelMapper mapper;
 
     // if class is configured as a spring bean, and it has only one constructor, we can omit @Autowired annotation
     public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
