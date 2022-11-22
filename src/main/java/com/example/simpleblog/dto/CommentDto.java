@@ -1,10 +1,9 @@
 package com.example.simpleblog.dto;
 
-// import com.example.simpleblog.entity.Post;
-// import com.fasterxml.jackson.annotation.JsonIgnore;
-// import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.UUID;
 
@@ -17,9 +16,12 @@ import java.util.UUID;
 @Data
 public class CommentDto {
     private UUID id;
+
+    @NotEmpty(message = "Field cannot be empty.")
+    @Size(min = 2, message = "Field must have at least 2 characters.")
     private String content;
+
     private UUID postId;
-    // private Post post;
-    // private PostDto post;
+
     private Date createdAt = new Date();
 }
