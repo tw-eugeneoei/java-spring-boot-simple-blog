@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
         PostDto post = postService.createPost(postDto);
         return new ResponseEntity<>(post, HttpStatus.CREATED);
         // // if you want to set the Location property in response headers
@@ -49,7 +50,7 @@ public class PostController {
     }
 
     @PutMapping("{postId}")
-    public ResponseEntity<PostDto> updatePostById(@PathVariable UUID postId, @RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> updatePostById(@PathVariable UUID postId, @Valid @RequestBody PostDto postDto) {
         PostDto post = postService.updatePostById(postId, postDto);
         return ResponseEntity.ok(post);
     }
