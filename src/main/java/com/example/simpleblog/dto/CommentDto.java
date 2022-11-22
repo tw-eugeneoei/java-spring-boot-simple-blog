@@ -6,6 +6,9 @@ import lombok.Data;
 import java.util.Date;
 import java.util.UUID;
 
+// @JsonIgnore
+// @JsonSetter or @JsonGetter
+
 @Data
 public class CommentDto {
     private UUID id;

@@ -32,5 +32,5 @@ public class Comment {
     private Post post;
 
     @Column(nullable = false)
-    private Date createdAt = new Date();
+    private Date createdAt;
 }

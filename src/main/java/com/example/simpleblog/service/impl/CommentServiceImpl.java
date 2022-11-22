@@ -45,12 +45,21 @@ public class CommentServiceImpl implements CommentService {
     // convert Comment DTO to Comment entity
     private Comment mapToEntity(CommentDto commentDto) {
         Comment comment = mapper.map(commentDto, Comment.class);
+//        Comment comment = new Comment();
+//        System.out.println(comment.getId());
+//        System.out.println(comment.getCreatedAt());
+//        comment.setContent(commentDto.getContent());
         return comment;
     }
 
     // convert Comment entity to Comment DTO
     private CommentDto mapToDTO(Comment comment) {
         CommentDto commentDto = mapper.map(comment, CommentDto.class);
+//        CommentDto commentDto = new CommentDto();
+//        commentDto.setId(comment.getId());
+//        commentDto.setContent(comment.getContent());
+//        commentDto.setCreatedAt(comment.getCreatedAt());
+//        commentDto.setPostId(comment.getPost().getId());
         return commentDto;
     }
 
