@@ -15,13 +15,19 @@ import java.util.UUID;
 @Entity
 @Table(
         name = "users",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})}
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"email"}),
+                @UniqueConstraint(columnNames = {"username"})
+        }
 )
 public class User {
     @Id
     @Type(type = "uuid-char")
     @GeneratedValue(generator = "UUID")
     private UUID id;
+
+    @Column(nullable = false)
+    private String username;
 
     @Column(nullable = false)
     private String email;
