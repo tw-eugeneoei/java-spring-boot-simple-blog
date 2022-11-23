@@ -19,10 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 // @Entity to map JPA entity to MySQL database table
 @Entity
-@Table(
-        name = "posts",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})}
-)
+@Table(name = "posts")
 public class Post {
     @Id // to indicate that this column is the primary key
     @Type(type = "uuid-char")

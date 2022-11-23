@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "comments")
 public class Comment {
     @Id // to indicate that this column is the primary key
     @Type(type = "uuid-char")
@@ -26,6 +26,7 @@ public class Comment {
     private String content;
 
     // FetchType.lazy fetches only the related entities from the db when you use the relationship
+    // fetches on demand
     @ManyToOne(fetch = FetchType.LAZY)
     // to specify foreign key
     @JoinColumn(name = "post_id", nullable = false)
