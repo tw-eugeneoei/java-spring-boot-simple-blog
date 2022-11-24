@@ -28,14 +28,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userRepository
                         .findByEmailOrUsername(emailOrUsername, emailOrUsername)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found with email or username:" + emailOrUsername));
+        // convert User entity object into spring security provided user
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                mapRolesToAuthority(user.getRoles())
+                // spring security user object accepts collection of GrantedAuthority. But User entity object is a Set<Role>
+                // therefore we need to convert Set<Role> into Collection of GrantedAuthority
+                mapUserRolesToGrantedAuthority(user.getRoles())
         );
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthority(Set<Role> roles) {
+    private Collection<? extends GrantedAuthority> mapUserRolesToGrantedAuthority(Set<Role> roles) {
+        // SimpleGrantedAuthority implements GrantedAuthority interface
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 }
