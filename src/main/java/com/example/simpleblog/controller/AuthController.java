@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/auth")
@@ -73,7 +75,10 @@ public class AuthController {
 
         userRepository.save(user);
 
-        return ResponseEntity.ok("User created");
+        // Map<String, String> response = new HashMap<>();
+        // response.put("message", "User created.");
+        // return ResponseEntity.ok(response);
+        return ResponseEntity.noContent().build();
 
     }
 }
