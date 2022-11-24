@@ -7,4 +7,6 @@ public class AppConstants {
     public static final String DEFAULT_SORT_DIR = "asc";
 
     public static final String ROLE_USER = "ROLE_USER";
+
+    public static final String TOKEN_TYPE = "Bearer";
 }
