@@ -1,11 +1,13 @@
 package com.example.simpleblog.controller;
 
+import com.example.simpleblog.dto.JwtAuthResponse;
 import com.example.simpleblog.dto.LoginDto;
 import com.example.simpleblog.dto.RegisterDto;
 import com.example.simpleblog.entity.Role;
 import com.example.simpleblog.entity.User;
 import com.example.simpleblog.repository.RoleRepository;
 import com.example.simpleblog.repository.UserRepository;
+import com.example.simpleblog.security.JwtTokenProvider;
 import com.example.simpleblog.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +41,11 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @PostMapping("login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginDto loginDto) {
+    public ResponseEntity<JwtAuthResponse> login(@Valid @RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmailOrUsername(),
@@ -48,7 +53,12 @@ public class AuthController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return ResponseEntity.ok("Login success");
+
+        // get token from jwtTokenProvider
+        String token = jwtTokenProvider.generateToken(authentication);
+        return ResponseEntity.ok(new JwtAuthResponse(token));
+
+        // return ResponseEntity.ok("Login success");
     }
 
     @PostMapping("register")
