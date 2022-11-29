@@ -22,6 +22,9 @@ public class Comment {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
+    @Column(nullable = false)
+    private Date createdAt;
+
     @Column(nullable = false) // if @Column annotation is not used, JPA automatically uses property as column name
     private String content;
 
@@ -32,6 +35,7 @@ public class Comment {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @Column(nullable = false)
-    private Date createdAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

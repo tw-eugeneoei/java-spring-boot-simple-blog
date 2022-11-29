@@ -4,9 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 // @Data generates getters for all fields, a useful toString method and hashCode and equals implementations that check
 // all non-transient fields. WIll also generate setters for all non-final fields, as well as a constructor
@@ -27,10 +25,13 @@ public class Post {
     private UUID id;
 
     @Column(nullable = false)
-    private String title;
+    private Date createdAt;
 
-    @Column(nullable = false)
-    private String description;
+//    @Column(nullable = false)
+//    private String title;
+//
+//    @Column(nullable = false)
+//    private String description;
 
     @Column(nullable = false)
     private String content;
@@ -39,4 +40,8 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     // set does not allow duplicates
     private Set<Comment> comments = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
