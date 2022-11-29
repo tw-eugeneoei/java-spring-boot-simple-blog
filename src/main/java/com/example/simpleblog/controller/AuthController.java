@@ -3,6 +3,7 @@ package com.example.simpleblog.controller;
 import com.example.simpleblog.dto.JwtAuthResponse;
 import com.example.simpleblog.dto.LoginDto;
 import com.example.simpleblog.dto.RegisterDto;
+import com.example.simpleblog.dto.UserDto;
 import com.example.simpleblog.entity.Role;
 import com.example.simpleblog.entity.User;
 import com.example.simpleblog.exception.BlogAPIException;
@@ -10,6 +11,7 @@ import com.example.simpleblog.repository.RoleRepository;
 import com.example.simpleblog.repository.UserRepository;
 import com.example.simpleblog.security.JwtTokenProvider;
 import com.example.simpleblog.utils.AppConstants;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/auth")
@@ -46,6 +46,9 @@ public class AuthController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private ModelMapper mapper;
+
     @PostMapping("login")
     public ResponseEntity<JwtAuthResponse> login(@Valid @RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
@@ -58,9 +61,14 @@ public class AuthController {
 
         // get token from jwtTokenProvider
         String token = jwtTokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthResponse(token));
+        User user = userRepository.findByEmail(loginDto.getEmailOrUsername());
+        return ResponseEntity.ok(new JwtAuthResponse(token, mapToDto(user)));
 
         // return ResponseEntity.ok("Login success");
+    }
+
+    private UserDto mapToDto(User user) {
+        return mapper.map(user, UserDto.class);
     }
 
     @PostMapping("register")

@@ -1,28 +1,38 @@
 package com.example.simpleblog.dto;
 
-import com.example.simpleblog.utils.AppConstants;
-
 public class JwtAuthResponse {
     private String accessToken;
-    private String tokenType = AppConstants.TOKEN_TYPE;
+    private UserDto user;
+//    private String tokenType = AppConstants.TOKEN_TYPE;
 
-    public JwtAuthResponse(String accessToken) {
+    public JwtAuthResponse(String accessToken, UserDto user) {
         this.accessToken = accessToken;
+        this.user = user;
     }
 
     public String getAccessToken() {
         return accessToken;
     }
 
-    public String getTokenType() {
-        return tokenType;
+//    public String getTokenType() {
+//        return tokenType;
+//    }
+
+
+    public UserDto getUser() {
+        return user;
     }
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
 
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
+//    public void setTokenType(String tokenType) {
+//        this.tokenType = tokenType;
+//    }
+
+
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 }
