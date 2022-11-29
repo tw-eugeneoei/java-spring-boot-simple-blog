@@ -5,11 +5,13 @@ import com.example.simpleblog.dto.LoginDto;
 import com.example.simpleblog.dto.RegisterDto;
 import com.example.simpleblog.entity.Role;
 import com.example.simpleblog.entity.User;
+import com.example.simpleblog.exception.BlogAPIException;
 import com.example.simpleblog.repository.RoleRepository;
 import com.example.simpleblog.repository.UserRepository;
 import com.example.simpleblog.security.JwtTokenProvider;
 import com.example.simpleblog.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -63,14 +65,18 @@ public class AuthController {
 
     @PostMapping("register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterDto registerDto) {
+        if (!doesPasswordAndConfirmPasswordMatch(registerDto.getPassword(), registerDto.getConfirmPassword())) {
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Password and Confirm Password do not match");
+        }
+
         // check if email exist
         if (userRepository.existsByEmail(registerDto.getEmail())) {
-            return ResponseEntity.badRequest().body("Email already exist.");
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Email already exist.");
         }
 
         // check if username exist
         if (userRepository.existsByUsername(registerDto.getUsername())) {
-            return ResponseEntity.badRequest().body("Username already exist.");
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Username already exist.");
         }
 
         User user = new User();
@@ -80,7 +86,8 @@ public class AuthController {
         user.setLastName(registerDto.getLastName());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
-        Role role = roleRepository.findByName(AppConstants.ROLE_USER).get();
+        // Role role = roleRepository.findByName(AppConstants.ROLE_USER).get();
+        Role role = roleRepository.findByName(AppConstants.ROLE_USER).orElse(null);
         user.setRoles(Collections.singleton(role));
 
         userRepository.save(user);
@@ -89,6 +96,9 @@ public class AuthController {
         // response.put("message", "User created.");
         // return ResponseEntity.ok(response);
         return ResponseEntity.noContent().build();
+    }
 
+    private Boolean doesPasswordAndConfirmPasswordMatch(String password, String confirmPassword) {
+        return password.equals(confirmPassword);
     }
 }

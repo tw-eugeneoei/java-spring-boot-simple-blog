@@ -24,4 +24,8 @@ public class RegisterDto {
     @NotEmpty(message = "Field cannot be empty.")
     @Size(min = 12, message = "Password must be at least 12 characters.")
     private String password;
+
+    @NotEmpty(message = "Field cannot be empty.")
+    @Size(min = 12, message = "Confirm Password must be at least 12 characters.")
+    private String confirmPassword;
 }
