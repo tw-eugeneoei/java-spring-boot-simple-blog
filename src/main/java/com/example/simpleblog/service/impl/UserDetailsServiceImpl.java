@@ -2,7 +2,9 @@ package com.example.simpleblog.service.impl;
 
 import com.example.simpleblog.entity.Role;
 import com.example.simpleblog.entity.User;
+import com.example.simpleblog.exception.BlogAPIException;
 import com.example.simpleblog.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -27,7 +29,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String emailOrUsername) throws UsernameNotFoundException {
         User user = userRepository
                         .findByEmailOrUsername(emailOrUsername, emailOrUsername)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found with email or username:" + emailOrUsername));
+                        // .orElseThrow(() -> new UsernameNotFoundException("User not found with email or username:" + emailOrUsername));
+                        .orElseThrow(() -> new BlogAPIException(HttpStatus.BAD_REQUEST, "Invalid email or username."));
+
         // convert User entity object into spring security provided user
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
