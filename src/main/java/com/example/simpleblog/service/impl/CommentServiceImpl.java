@@ -5,15 +5,19 @@ import com.example.simpleblog.dto.CommentResponse;
 import com.example.simpleblog.dto.PostDto;
 import com.example.simpleblog.entity.Comment;
 import com.example.simpleblog.entity.Post;
+import com.example.simpleblog.entity.User;
 import com.example.simpleblog.exception.ResourceNotFoundException;
 import com.example.simpleblog.repository.CommentRepository;
 import com.example.simpleblog.repository.PostRepository;
+import com.example.simpleblog.repository.UserRepository;
 import com.example.simpleblog.service.CommentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,42 +29,42 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final ModelMapper mapper;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, ModelMapper mapper) {
+    public CommentServiceImpl(
+            CommentRepository commentRepository,
+            PostRepository postRepository,
+            UserRepository userRepository,
+            ModelMapper mapper
+    ) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
         this.mapper = mapper;
     }
 
     @Override
     public CommentDto createComment(UUID postId, CommentDto commentDto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(auth.getName());
+
         Comment comment = mapToEntity(commentDto);
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
         comment.setPost(post);
+        comment.setUser(user);
         Comment newComment = commentRepository.save(comment);
         return mapToDTO(newComment);
     }
 
     // convert Comment DTO to Comment entity
     private Comment mapToEntity(CommentDto commentDto) {
-        Comment comment = mapper.map(commentDto, Comment.class);
-//        Comment comment = new Comment();
-//        System.out.println(comment.getId());
-//        System.out.println(comment.getCreatedAt());
-//        comment.setContent(commentDto.getContent());
-        return comment;
+        return mapper.map(commentDto, Comment.class);
     }
 
     // convert Comment entity to Comment DTO
     private CommentDto mapToDTO(Comment comment) {
-        CommentDto commentDto = mapper.map(comment, CommentDto.class);
-//        CommentDto commentDto = new CommentDto();
-//        commentDto.setId(comment.getId());
-//        commentDto.setContent(comment.getContent());
-//        commentDto.setCreatedAt(comment.getCreatedAt());
-//        commentDto.setPostId(comment.getPost().getId());
-        return commentDto;
+        return mapper.map(comment, CommentDto.class);
     }
 
     @Override
@@ -72,11 +76,14 @@ public class CommentServiceImpl implements CommentService {
                 Sort.by("createdAt").descending()
         );
 
+        // is this necessary?
+        // postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
         Page<Comment> comments = commentRepository.findCommentsByPostId(postId, pageable);
         List<Comment> listOfComments = comments.getContent();
-        List<CommentDto> results = listOfComments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
+        List<CommentDto> results = listOfComments.stream().map(this::mapToDTO).collect(Collectors.toList());
 
-        CommentResponse commentResponse = new CommentResponse(
+        return new CommentResponse(
                 results,
                 comments.getNumber() + 1,
                 comments.getSize(),
@@ -84,7 +91,6 @@ public class CommentServiceImpl implements CommentService {
                 comments.getTotalPages(),
                 comments.hasNext()
         );
-        return commentResponse;
     }
 
     @Override
