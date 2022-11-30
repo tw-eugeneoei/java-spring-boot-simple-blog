@@ -100,19 +100,32 @@ public class PostServiceImpl implements PostService {
         // get post by id
         // if post does not exist, throw exception
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
-//        post.setTitle(postDto.getTitle());
-//        post.setDescription(postDto.getDescription());
         post.setContent(postDto.getContent());
+
+        if (!isLoggedInUserPostOwner(post.getUser().getId())) {
+            throw new BlogAPIException(HttpStatus.FORBIDDEN, "Only owner of post is allowed to update resource.");
+        }
 
         Post updatedPost = postRepository.save(post);
         return mapToDTO(updatedPost);
     }
 
+    private Boolean isLoggedInUserPostOwner(UUID postOwnerId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(auth.getName());
+        UUID userId = user.getId();
+        return userId.equals(postOwnerId);
+    }
+
     @Override
     public void deletePostById(UUID id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
-        postRepository.delete(post);
 
+        if (!isLoggedInUserPostOwner(post.getUser().getId())) {
+            throw new BlogAPIException(HttpStatus.FORBIDDEN, "Only owner of post is allowed to delete resource.");
+        }
+
+        postRepository.delete(post);
         // postRepository.deleteById(id);
     }
 }
