@@ -7,6 +7,8 @@ import com.example.simpleblog.utils.AppConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,17 +19,17 @@ import java.util.UUID;
 @RequestMapping("api/posts")
 public class PostController {
 
-    private PostService postService; // interface gets injected which leads to loose coupling
+    private final PostService postService; // interface gets injected which leads to loose coupling
 
     // if class is configured as a spring bean and it has only one constructor, we can omit @Autowired annotation
     public PostController(PostService postService) {
         this.postService = postService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
-        PostDto post = postService.createPost(postDto);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        PostDto post = postService.createPost(postDto, auth.getName());
         return new ResponseEntity<>(post, HttpStatus.CREATED);
         // // if you want to set the Location property in response headers
         // URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{postId}").buildAndExpand(post.getId()).toUri();
@@ -51,14 +53,14 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{postId}")
     public ResponseEntity<PostDto> updatePostById(@PathVariable UUID postId, @Valid @RequestBody PostDto postDto) {
         PostDto post = postService.updatePostById(postId, postDto);
         return ResponseEntity.ok(post);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{postId}")
     public ResponseEntity<?> deletePostById(@PathVariable UUID postId) {
         postService.deletePostById(postId);

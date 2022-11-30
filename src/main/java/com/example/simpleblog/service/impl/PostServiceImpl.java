@@ -3,17 +3,22 @@ package com.example.simpleblog.service.impl;
 import com.example.simpleblog.dto.PostDto;
 import com.example.simpleblog.dto.PostResponse;
 import com.example.simpleblog.entity.Post;
+import com.example.simpleblog.entity.User;
+import com.example.simpleblog.exception.BlogAPIException;
 import com.example.simpleblog.exception.ResourceNotFoundException;
 import com.example.simpleblog.repository.PostRepository;
+import com.example.simpleblog.repository.UserRepository;
 import com.example.simpleblog.service.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,34 +29,35 @@ public class PostServiceImpl implements PostService {
 
     // constructor based dependency injection
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final ModelMapper mapper;
 
     // if class is configured as a spring bean, and it has only one constructor, we can omit @Autowired annotation
-    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
+    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, ModelMapper mapper) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
         this.mapper = mapper;
     }
 
     @Override
-    public PostDto createPost(PostDto postDto) {
-        // convert dto to entity and save into db
+    public PostDto createPost(PostDto postDto, String emailOrUsername) {
         Post post = mapToEntity(postDto);
+        User user = userRepository.findByEmail(emailOrUsername);
+        // convert dto to entity and save into db
+        post.setUser(user);
         Post newPost = postRepository.save(post); // save returns an entity
-
         // convert entity to dto before returning to controller
         return mapToDTO(newPost);
     }
 
     // convert Post DTO to Post entity using ModelMapper
     private Post mapToEntity(PostDto postDto) {
-        Post post = mapper.map(postDto, Post.class);
-        return post;
+        return mapper.map(postDto, Post.class);
     }
 
     // convert Post entity to Post DTO using ModelMapper
     private PostDto mapToDTO(Post post) {
-        PostDto postDto = mapper.map(post, PostDto.class);
-        return postDto;
+        return mapper.map(post, PostDto.class);
     }
 
     @Override
@@ -69,7 +75,7 @@ public class PostServiceImpl implements PostService {
         // List<PostDto> results = listOfPosts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
         List<PostDto> results = listOfPosts.stream().map(this::mapToDTO).collect(Collectors.toList()); // same as above
 
-        PostResponse postResponse = new PostResponse(
+        return new PostResponse(
                 results,
                 posts.getNumber() + 1,
                 posts.getSize(),
@@ -77,7 +83,6 @@ public class PostServiceImpl implements PostService {
                 posts.getTotalPages(),
                 posts.hasNext()
         );
-        return postResponse;
     }
 
     @Override
@@ -91,8 +96,8 @@ public class PostServiceImpl implements PostService {
         // get post by id
         // if post does not exist, throw exception
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
-        post.setTitle(postDto.getTitle());
-        post.setDescription(postDto.getDescription());
+//        post.setTitle(postDto.getTitle());
+//        post.setDescription(postDto.getDescription());
         post.setContent(postDto.getContent());
 
         Post updatedPost = postRepository.save(post);

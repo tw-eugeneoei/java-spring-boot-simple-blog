@@ -4,22 +4,17 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
 public class PostDto {
     private UUID id;
+    private Date createdAt  = new Date();
 
     @NotEmpty(message = "Field cannot be empty.")
-    @Size(min = 2, message = "Field must have at least 2 characters.")
-    private String title;
-
-    @NotEmpty(message = "Field cannot be empty.")
-    private String description;
-
-    @NotEmpty(message = "Field cannot be empty.")
+    @Size(max = 255, message = "Field cannot have more than 255 characters.")
     private String content;
 
-    private List<CommentDto> comments;
+    private UserDto user;
 }

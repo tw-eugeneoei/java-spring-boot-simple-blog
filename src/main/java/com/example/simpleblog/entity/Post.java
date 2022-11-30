@@ -27,19 +27,12 @@ public class Post {
     @Column(nullable = false)
     private Date createdAt;
 
-//    @Column(nullable = false)
-//    private String title;
-//
-//    @Column(nullable = false)
-//    private String description;
-
     @Column(nullable = false)
     private String content;
 
     // orphanRemoval means when parent is removed, child is also removed
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    // set does not allow duplicates
-    private Set<Comment> comments = new HashSet<>();
+    private List<Comment> comments;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
