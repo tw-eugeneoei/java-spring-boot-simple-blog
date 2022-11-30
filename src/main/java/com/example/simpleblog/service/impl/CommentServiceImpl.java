@@ -6,6 +6,7 @@ import com.example.simpleblog.dto.PostDto;
 import com.example.simpleblog.entity.Comment;
 import com.example.simpleblog.entity.Post;
 import com.example.simpleblog.entity.User;
+import com.example.simpleblog.exception.BlogAPIException;
 import com.example.simpleblog.exception.ResourceNotFoundException;
 import com.example.simpleblog.repository.CommentRepository;
 import com.example.simpleblog.repository.PostRepository;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -120,9 +122,20 @@ public class CommentServiceImpl implements CommentService {
             throw new ResourceNotFoundException("Comment", "id", commentId);
         }
 
+        if (!isLoggedInUserCommentOwner(comment.getUser().getId())) {
+            throw new BlogAPIException(HttpStatus.FORBIDDEN, "Only owner of comment is allowed to update resource.");
+        }
+
         comment.setContent(commentDto.getContent());
         Comment updatedComment = commentRepository.save(comment);
         return mapToDTO(updatedComment);
+    }
+
+    private Boolean isLoggedInUserCommentOwner(UUID commentOwnerId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(auth.getName());
+        UUID userId = user.getId();
+        return userId.equals(commentOwnerId);
     }
 
     @Override
