@@ -28,8 +28,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        PostDto post = postService.createPost(postDto, auth.getName());
+        PostDto post = postService.createPost(postDto);
         return new ResponseEntity<>(post, HttpStatus.CREATED);
         // // if you want to set the Location property in response headers
         // URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{postId}").buildAndExpand(post.getId()).toUri();

@@ -15,6 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,10 +42,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto createPost(PostDto postDto, String emailOrUsername) {
-        Post post = mapToEntity(postDto);
-        User user = userRepository.findByEmail(emailOrUsername);
+    public PostDto createPost(PostDto postDto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(auth.getName());
+
         // convert dto to entity and save into db
+        Post post = mapToEntity(postDto);
         post.setUser(user);
         Post newPost = postRepository.save(post); // save returns an entity
         // convert entity to dto before returning to controller

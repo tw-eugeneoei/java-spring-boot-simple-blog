@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface PostService {
 
-    PostDto createPost(PostDto post, String emailOrUsername);
+    PostDto createPost(PostDto post);
 
     PostResponse getPosts(int pageNo, int pageSize, String sortBy, String sortDir);
 
