@@ -140,15 +140,20 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteCommentById(UUID postId, UUID commentId) {
-        // Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
-        // if (comment == null) {
-        //     throw new ResourceNotFoundException("Comment", "id", commentId);
-        // }
-        // commentRepository.delete(comment);
-
-        Long deleted = commentRepository.deleteByIdAndPostId(commentId, postId);
-        if (deleted == 0) {
+        Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
+        if (comment == null) {
             throw new ResourceNotFoundException("Comment", "id", commentId);
         }
+
+        if (!isLoggedInUserCommentOwner(comment.getUser().getId())) {
+            throw new BlogAPIException(HttpStatus.FORBIDDEN, "Only owner of comment is allowed to delete resource.");
+        }
+
+        commentRepository.delete(comment);
+
+//        Long deleted = commentRepository.deleteByIdAndPostId(commentId, postId);
+//        if (deleted == 0) {
+//            throw new ResourceNotFoundException("Comment", "id", commentId);
+//        }
     }
 }
