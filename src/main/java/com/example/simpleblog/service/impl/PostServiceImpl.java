@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -96,6 +97,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    // @PostAuthorize("returnObject.getUser().getEmail() == authentication.getName()")
     public PostDto updatePostById(UUID id, PostDto postDto) {
         // get post by id
         // if post does not exist, throw exception
@@ -118,6 +120,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    // @PostAuthorize("returnObject.getUser().getEmail() == authentication.getName()")
     public void deletePostById(UUID id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
 

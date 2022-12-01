@@ -9,6 +9,7 @@
 
 - https://spring.io/guides/gs/spring-boot/
 - https://reflectoring.io/spring-boot-test/
+- https://www.toptal.com/spring/spring-security-tutorial
 
 # Seed
 

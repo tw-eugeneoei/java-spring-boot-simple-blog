@@ -6,13 +6,10 @@ import com.example.simpleblog.service.PostService;
 import com.example.simpleblog.utils.AppConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -47,19 +44,17 @@ public class PostController {
     }
 
     @GetMapping("{postId}")
-    public ResponseEntity<PostDto> getPostById(@PathVariable UUID postId) {
+    public ResponseEntity<PostDto> getPostById(@PathVariable UUID postId, Authentication authentication) {
         PostDto post = postService.getPostById(postId);
         return ResponseEntity.ok(post);
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{postId}")
     public ResponseEntity<PostDto> updatePostById(@PathVariable UUID postId, @Valid @RequestBody PostDto postDto) {
         PostDto post = postService.updatePostById(postId, postDto);
         return ResponseEntity.ok(post);
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{postId}")
     public ResponseEntity<?> deletePostById(@PathVariable UUID postId) {
         postService.deletePostById(postId);
