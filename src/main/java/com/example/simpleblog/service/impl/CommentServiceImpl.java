@@ -118,37 +118,14 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto updateCommentById(UUID postId, UUID commentId, CommentDto commentDto) {
         Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
-        if (comment == null) {
-            throw new ResourceNotFoundException("Comment", "id", commentId);
-        }
-
-        if (!isLoggedInUserCommentOwner(comment.getUser().getId())) {
-            throw new BlogAPIException(HttpStatus.FORBIDDEN, "Only owner of comment is allowed to update resource.");
-        }
-
         comment.setContent(commentDto.getContent());
         Comment updatedComment = commentRepository.save(comment);
         return mapToDTO(updatedComment);
     }
 
-    private Boolean isLoggedInUserCommentOwner(UUID commentOwnerId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByEmail(auth.getName());
-        UUID userId = user.getId();
-        return userId.equals(commentOwnerId);
-    }
-
     @Override
     public void deleteCommentById(UUID postId, UUID commentId) {
         Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
-        if (comment == null) {
-            throw new ResourceNotFoundException("Comment", "id", commentId);
-        }
-
-        if (!isLoggedInUserCommentOwner(comment.getUser().getId())) {
-            throw new BlogAPIException(HttpStatus.FORBIDDEN, "Only owner of comment is allowed to delete resource.");
-        }
-
         commentRepository.delete(comment);
 
 //        Long deleted = commentRepository.deleteByIdAndPostId(commentId, postId);
