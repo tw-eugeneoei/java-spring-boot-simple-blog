@@ -26,20 +26,16 @@ public class CommentAuthorisationAspect extends ResourceAuthorisation {
 
     @Before("execution(* com.example.simpleblog.service.impl.CommentServiceImpl.update*(..)) && args(postId, commentId, ..)")
     public void beforeUpdateAnyAdvice(UUID postId, UUID commentId) {
-        System.out.println(">>>> update comment AOP");
         UUID commentOwnerId = getCommentOwnerId(postId, commentId);
         if (!isOwner(commentOwnerId)) {
-            System.out.println(">>>> update comment AOP forbidden success");
             throw new BlogAPIException(HttpStatus.FORBIDDEN, AppConstants.UNAUTHORISED_UPDATE_MESSAGE);
         }
     }
 
     @Before("execution(* com.example.simpleblog.service.impl.CommentServiceImpl.delete*(..)) && args(postId, commentId, ..)")
     public void beforeDeleteAnyAdvice(UUID postId, UUID commentId) {
-        System.out.println(">>>> delete comment AOP");
         UUID commentOwnerId = getCommentOwnerId(postId, commentId);
         if (!isOwner(commentOwnerId)) {
-            System.out.println(">>>> delete comment AOP forbidden success");
             throw new BlogAPIException(HttpStatus.FORBIDDEN, AppConstants.UNAUTHORISED_DELETE_MESSAGE);
         }
     }
