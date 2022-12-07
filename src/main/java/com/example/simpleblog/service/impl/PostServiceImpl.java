@@ -1,10 +1,10 @@
 package com.example.simpleblog.service.impl;
 
+import com.example.simpleblog.aspect.annotation.IsPostResourceOwner;
 import com.example.simpleblog.dto.PostDto;
 import com.example.simpleblog.dto.PostResponse;
 import com.example.simpleblog.entity.Post;
 import com.example.simpleblog.entity.User;
-import com.example.simpleblog.exception.BlogAPIException;
 import com.example.simpleblog.exception.ResourceNotFoundException;
 import com.example.simpleblog.repository.PostRepository;
 import com.example.simpleblog.repository.UserRepository;
@@ -14,14 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -98,6 +95,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     // @PostAuthorize("returnObject.getUser().getEmail() == authentication.getName()")
+    // @IsPostResourceOwner(method = "update")
     public PostDto updatePostById(UUID id, PostDto postDto) {
         // get post by id
         // if post does not exist, throw exception
@@ -109,6 +107,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     // @PostAuthorize("returnObject.getUser().getEmail() == authentication.getName()")
+    // @IsPostResourceOwner(method = "delete")
     public void deletePostById(UUID id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         postRepository.delete(post);

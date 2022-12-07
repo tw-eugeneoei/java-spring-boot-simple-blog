@@ -13,4 +13,8 @@ public class AppConstants {
     public  static final String BAD_CREDENTIALS_ERROR_MESSAGE = "Invalid email, username or password.";
     public  static final String UNAUTHORISED_UPDATE_MESSAGE = "Unauthorised to update resource.";
     public  static final String UNAUTHORISED_DELETE_MESSAGE = "Unauthorised to delete resource.";
+
+    public static String formatUnauthorisedMessage(String method) {
+        return "Unauthorised to " + method + " resource.";
+    }
 }

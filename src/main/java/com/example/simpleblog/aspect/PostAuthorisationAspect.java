@@ -1,4 +1,7 @@
 package com.example.simpleblog.aspect;
+/*
+Aspect language (code) style using method name matching
+ */
 
 import com.example.simpleblog.entity.Post;
 import com.example.simpleblog.exception.BlogAPIException;
@@ -26,6 +29,7 @@ public class PostAuthorisationAspect extends ResourceAuthorisation {
 
     @Before("execution(* com.example.simpleblog.service.impl.PostServiceImpl.update*(..)) && args(postId, ..)")
     public void beforeAnyUpdateAdvice(UUID postId) {
+        System.out.println("Aspect language style");
         UUID postOwnerId = getPostOwnerId(postId);
         if (!isOwner(postOwnerId)) {
             throw new BlogAPIException(HttpStatus.FORBIDDEN, AppConstants.UNAUTHORISED_UPDATE_MESSAGE);
@@ -34,6 +38,7 @@ public class PostAuthorisationAspect extends ResourceAuthorisation {
 
     @Before("execution(* com.example.simpleblog.service.impl.PostServiceImpl.delete*(..)) && args(postId)")
     public void beforeAnyDeleteAdvice(UUID postId) {
+        System.out.println("Aspect language style");
         UUID postOwnerId = getPostOwnerId(postId);
         if (!isOwner(postOwnerId)) {
             throw new BlogAPIException(HttpStatus.FORBIDDEN, AppConstants.UNAUTHORISED_DELETE_MESSAGE);

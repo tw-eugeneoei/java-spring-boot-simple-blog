@@ -7,14 +7,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.UUID;
 
-public class ResourceAuthorisation implements IResourceAuthorisation {
+public class ResourceAuthorisation {
     public final UserRepository userRepository;
 
     public ResourceAuthorisation(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    @Override
     public boolean isOwner(UUID ownerId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(auth.getName());
