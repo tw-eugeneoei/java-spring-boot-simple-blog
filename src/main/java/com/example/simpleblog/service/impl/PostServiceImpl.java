@@ -1,6 +1,6 @@
 package com.example.simpleblog.service.impl;
 
-import com.example.simpleblog.aspect.annotation.IsPostResourceOwner;
+import com.example.simpleblog.aspect.IsPostOwner;
 import com.example.simpleblog.dto.PostDto;
 import com.example.simpleblog.dto.PostResponse;
 import com.example.simpleblog.entity.Post;
@@ -95,7 +95,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     // @PostAuthorize("returnObject.getUser().getEmail() == authentication.getName()")
-    // @IsPostResourceOwner(method = "update")
+    @IsPostOwner(method = "update")
     public PostDto updatePostById(UUID id, PostDto postDto) {
         // get post by id
         // if post does not exist, throw exception
@@ -107,7 +107,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     // @PostAuthorize("returnObject.getUser().getEmail() == authentication.getName()")
-    // @IsPostResourceOwner(method = "delete")
+    @IsPostOwner(method = "delete")
     public void deletePostById(UUID id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         postRepository.delete(post);

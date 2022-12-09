@@ -1,4 +1,4 @@
-package com.example.simpleblog.aspect.annotation;
+package com.example.simpleblog.aspect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 // @Target annotation tells us where our annotation will be applicable. Here we are using ElementType.Method, which means it will only work on methods
 @Target(ElementType.METHOD)
-public @interface IsPostResourceOwner {
+public @interface IsPostOwner {
     String method() default "unknown";
 }

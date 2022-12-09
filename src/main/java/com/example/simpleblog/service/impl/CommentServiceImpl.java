@@ -1,5 +1,6 @@
 package com.example.simpleblog.service.impl;
 
+import com.example.simpleblog.aspect.IsCommentOwner;
 import com.example.simpleblog.dto.CommentDto;
 import com.example.simpleblog.dto.CommentResponse;
 import com.example.simpleblog.dto.PostDto;
@@ -116,6 +117,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @IsCommentOwner(method = "update")
     public CommentDto updateCommentById(UUID postId, UUID commentId, CommentDto commentDto) {
         Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
         comment.setContent(commentDto.getContent());
@@ -124,6 +126,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @IsCommentOwner(method = "delete")
     public void deleteCommentById(UUID postId, UUID commentId) {
         Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
         commentRepository.delete(comment);
