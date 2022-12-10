@@ -34,7 +34,7 @@ public class IsPostOwnerAspect extends IsResourceOwnerAspect<Post> {
     // this approach will require first argument in advice and first value in "argNames" to be an annotation type
     // this approach to retrieve annotation property
     @Before(value = "@annotation(asd) && args(id, ..)", argNames = "asd, id")
-    public void updateAndDeletePostAuthorisationCheck(IsPostOwner isPostResourceOwner, UUID id) {
+    public void updateAndDeletePostAuthorisationAdvice(IsPostOwner isPostResourceOwner, UUID id) {
         UUID postOwnerId = getResource(id).getUser().getId();
         validateOwnership(postOwnerId, isPostResourceOwner.method());
     }
