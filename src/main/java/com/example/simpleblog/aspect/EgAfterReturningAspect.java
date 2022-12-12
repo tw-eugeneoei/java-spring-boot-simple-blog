@@ -1,8 +1,6 @@
 package com.example.simpleblog.aspect;
 
 import com.example.simpleblog.dto.PostDto;
-import com.example.simpleblog.dto.PostResponse;
-import com.example.simpleblog.entity.Post;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,7 +14,7 @@ import java.util.UUID;
 @Component
 public class EgAfterReturningAspect {
 
-//    // most basic example, matches based on match method names
+//    // most basic example, matches based on matching method names
 //    @AfterReturning("execution(* com.example.simpleblog.service.impl.PostServiceImpl.get*(..))")
 //    public void getAdvice() {
 //        System.out.println("\nAfterReturning advice example");

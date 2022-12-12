@@ -98,6 +98,7 @@ public class PostServiceImpl implements PostService {
     @Override
     // @PostAuthorize("returnObject.getUser().getEmail() == authentication.getName()")
     @IsPostOwner(method = "update")
+    @EgAfterReturning
     public PostDto updatePostById(UUID id, PostDto postDto) {
         // get post by id
         // if post does not exist, throw exception
