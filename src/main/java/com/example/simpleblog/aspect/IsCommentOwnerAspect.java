@@ -29,7 +29,7 @@ public class IsCommentOwnerAspect extends IsResourceOwnerAspect<Comment> {
             value = "@annotation(isCommentOwner) && args(postId, commentId, ..)",
             argNames = "isCommentOwner, postId, commentId"
     )
-    public void updateAndDeleteAdvice(IsCommentOwner isCommentOwner, UUID postId, UUID commentId) {}
+    public void updateAndDelete(IsCommentOwner isCommentOwner, UUID postId, UUID commentId) {}
 
     @Before("updateAndDeleteAdvice(isCommentOwner, postId, commentId)")
     public void updateAndDeletePostAuthorisationAdvice(IsCommentOwner isCommentOwner, UUID postId, UUID commentId) {
