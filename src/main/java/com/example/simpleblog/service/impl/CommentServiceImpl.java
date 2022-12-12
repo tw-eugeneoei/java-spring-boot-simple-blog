@@ -1,6 +1,7 @@
 package com.example.simpleblog.service.impl;
 
 import com.example.simpleblog.aspect.IsCommentOwner;
+import com.example.simpleblog.aspect.Logger;
 import com.example.simpleblog.dto.CommentDto;
 import com.example.simpleblog.dto.CommentResponse;
 import com.example.simpleblog.dto.PostDto;
@@ -118,6 +119,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @IsCommentOwner(method = "update")
+    @Logger(value = "apple")
     public CommentDto updateCommentById(UUID postId, UUID commentId, CommentDto commentDto) {
         Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
         comment.setContent(commentDto.getContent());
