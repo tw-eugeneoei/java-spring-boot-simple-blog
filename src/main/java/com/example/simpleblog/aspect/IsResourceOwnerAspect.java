@@ -11,7 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.UUID;
 
-public class IsResourceOwnerAspect<E> {
+public abstract class IsResourceOwnerAspect<E> {
 
     private final JpaRepository<E, UUID> repository;
     private final UserRepository userRepository;
@@ -23,21 +23,21 @@ public class IsResourceOwnerAspect<E> {
         this.resource = resource;
     }
 
-    public E getResource(UUID id) {
+    public final E getResource(UUID id) {
         return repository.findById(id).orElseThrow(() -> new BlogAPIException(
                 HttpStatus.NOT_FOUND,
                 String.format("%s resource with id: \"%s\" not found.", resource, id)
         ));
     }
 
-    public boolean isResourceOwner(UUID ownerId) {
+    public final boolean isResourceOwner(UUID ownerId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(auth.getName());
         UUID userId = user.getId();
         return userId.equals(ownerId);
     }
 
-    public void validateOwnership(UUID ownerId, String method) {
+    public final void validateOwnership(UUID ownerId, String method) {
         if (!isResourceOwner(ownerId)) {
             throw new BlogAPIException(
                     HttpStatus.FORBIDDEN,
