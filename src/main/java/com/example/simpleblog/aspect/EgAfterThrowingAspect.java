@@ -10,7 +10,7 @@ public class EgAfterThrowingAspect {
 
 //    // most basic example, matches based on matching method names
 //    @AfterThrowing("execution(* com.example.simpleblog.service.impl.PostServiceImpl.*(..))")
-//    public void postExceptionAdvice() {
+//    public void afterThrowingAdvice() {
 //        System.out.println("\nAfterThrowing advice example");
 //    }
 
@@ -18,7 +18,7 @@ public class EgAfterThrowingAspect {
 //            pointcut = "execution(* com.example.simpleblog.service.impl.PostServiceImpl.*(..))",
 //            throwing = "ex"
 //    )
-//    public void postExceptionAdvice(Exception ex) {
+//    public void afterThrowingAdvice(Exception ex) {
 //        System.out.println("\nAfterThrowing advice example");
 //        System.out.println("Exception message: " + ex.getMessage());
 //    }

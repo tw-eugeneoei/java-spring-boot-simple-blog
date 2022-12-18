@@ -1,5 +1,6 @@
 package com.example.simpleblog.service.impl;
 
+import com.example.simpleblog.aspect.EgAfter;
 import com.example.simpleblog.aspect.EgAfterReturning;
 import com.example.simpleblog.aspect.EgAfterThrowing;
 import com.example.simpleblog.aspect.IsPostOwner;
@@ -92,6 +93,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @EgAfterReturning(value = "Value for EgAfterReturning AOP annotation")
     @EgAfterThrowing()
+    @EgAfter(value = "Value for EgAfter AOP annotation")
     public PostDto getPostById(UUID id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         return mapToDTO(post);
