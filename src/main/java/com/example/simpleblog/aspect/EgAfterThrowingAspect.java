@@ -28,7 +28,7 @@ public class EgAfterThrowingAspect {
             argNames = "durian, ex",
             throwing = "ex"
     )
-    public void postExceptionAdvice(EgAfterReturning egAfterReturning, Exception exx) {
+    public void afterThrowingAdvice(EgAfterThrowing egAfterThrowing, Exception exx) {
         System.out.println("\nAfterThrowing advice example");
         System.out.println("Exception message: " + exx.getMessage());
     }
