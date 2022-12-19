@@ -44,7 +44,7 @@ public class PostController {
     }
 
     @GetMapping("{postId}")
-    public ResponseEntity<PostDto> getPostById(@PathVariable UUID postId, Authentication authentication) {
+    public ResponseEntity<PostDto> getPostById(@PathVariable UUID postId) {
         PostDto post = postService.getPostById(postId);
         return ResponseEntity.ok(post);
     }

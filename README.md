@@ -25,8 +25,17 @@
     - Log exception
     - Perform auditing on exception
     - Notify DevOps team via email or sms e.g. during 500 exception
-  - After (finally) advice: Advice to be executed regardless of the means by which a join point exits (normal or exceptional return).
+  - After (finally) advice: Advice to be executed regardless of the means by which a join point exits (normal or exceptional return) ie runs after a method is completed regardless of the outcome/exceptions
+    - Log exception
+    - Perform auditing on exception
+    - code to run regardless of method outcome eg cleaning up of resources
   - Around advice: Advice that surrounds a join point such as a method invocation. This is the most powerful kind of advice. Around advice can perform custom behavior before and after the method invocation. It is also responsible for choosing whether to proceed to the join point or to shortcut the advised method execution by returning its own return value or throwing an exception.
+    - runs before and after method call
+    - logging, auditing, security
+    - pre-processing and post-processing data
+    - instrumentation and profiling code eg how long does it take for a section of code to run
+    - managing exceptions ie swallow/handle/stop exceptions
+    - get reference to ProceedingJointPoint which gives access to the target method where advice can decide whether to execute target method
 
 - **Join Point**: when to apply the code during programme execution
 - **Pointcut**: a predicate expression for where advice should be applied
