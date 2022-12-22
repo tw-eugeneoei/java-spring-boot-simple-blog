@@ -15,40 +15,42 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommentAuthorisationAspect extends ResourceAuthorisation {
 
-  private final CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
 
-  public CommentAuthorisationAspect(
-      UserRepository userRepository, CommentRepository commentRepository) {
-    super(userRepository);
-    this.commentRepository = commentRepository;
-  }
+    public CommentAuthorisationAspect(
+            UserRepository userRepository, CommentRepository commentRepository) {
+        super(userRepository);
+        this.commentRepository = commentRepository;
+    }
 
-  //    @Before("execution(* com.example.simpleblog.service.impl.CommentServiceImpl.update*(..)) &&
-  // args(postId, commentId, ..)")
-  //    public void beforeUpdateAnyAdvice(UUID postId, UUID commentId) {
-  //        UUID commentOwnerId = getCommentOwnerId(postId, commentId);
-  //        if (!isOwner(commentOwnerId)) {
-  //            throw new BlogAPIException(HttpStatus.FORBIDDEN,
-  // AppConstants.UNAUTHORISED_UPDATE_MESSAGE);
-  //        }
-  //    }
-  //
-  //    @Before("execution(* com.example.simpleblog.service.impl.CommentServiceImpl.delete*(..)) &&
-  // args(postId, commentId, ..)")
-  //    public void beforeDeleteAnyAdvice(UUID postId, UUID commentId) {
-  //        UUID commentOwnerId = getCommentOwnerId(postId, commentId);
-  //        if (!isOwner(commentOwnerId)) {
-  //            throw new BlogAPIException(HttpStatus.FORBIDDEN,
-  // AppConstants.UNAUTHORISED_DELETE_MESSAGE);
-  //        }
-  //    }
-  //
-  //    private UUID getCommentOwnerId(UUID postId, UUID commentId) {
-  //        Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
-  //        if (comment == null) {
-  //            throw new ResourceNotFoundException("Comment", "id", commentId);
-  //        } else {
-  //            return comment.getUser().getId();
-  //        }
-  //    }
+    //    @Before("execution(* com.example.simpleblog.service.impl.CommentServiceImpl.update*(..))
+    // &&
+    // args(postId, commentId, ..)")
+    //    public void beforeUpdateAnyAdvice(UUID postId, UUID commentId) {
+    //        UUID commentOwnerId = getCommentOwnerId(postId, commentId);
+    //        if (!isOwner(commentOwnerId)) {
+    //            throw new BlogAPIException(HttpStatus.FORBIDDEN,
+    // AppConstants.UNAUTHORISED_UPDATE_MESSAGE);
+    //        }
+    //    }
+    //
+    //    @Before("execution(* com.example.simpleblog.service.impl.CommentServiceImpl.delete*(..))
+    // &&
+    // args(postId, commentId, ..)")
+    //    public void beforeDeleteAnyAdvice(UUID postId, UUID commentId) {
+    //        UUID commentOwnerId = getCommentOwnerId(postId, commentId);
+    //        if (!isOwner(commentOwnerId)) {
+    //            throw new BlogAPIException(HttpStatus.FORBIDDEN,
+    // AppConstants.UNAUTHORISED_DELETE_MESSAGE);
+    //        }
+    //    }
+    //
+    //    private UUID getCommentOwnerId(UUID postId, UUID commentId) {
+    //        Comment comment = commentRepository.findByIdAndPostId(commentId, postId);
+    //        if (comment == null) {
+    //            throw new ResourceNotFoundException("Comment", "id", commentId);
+    //        } else {
+    //            return comment.getUser().getId();
+    //        }
+    //    }
 }

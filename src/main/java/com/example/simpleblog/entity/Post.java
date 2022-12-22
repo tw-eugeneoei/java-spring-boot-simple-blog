@@ -22,22 +22,22 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "posts")
 public class Post {
-  @Id // to indicate that this column is the primary key
-  @Type(type = "uuid-char")
-  @GeneratedValue(generator = "UUID")
-  private UUID id;
+    @Id // to indicate that this column is the primary key
+    @Type(type = "uuid-char")
+    @GeneratedValue(generator = "UUID")
+    private UUID id;
 
-  @Column(nullable = false)
-  private Date createdAt;
+    @Column(nullable = false)
+    private Date createdAt;
 
-  @Column(nullable = false)
-  private String content;
+    @Column(nullable = false)
+    private String content;
 
-  // orphanRemoval means when parent is removed, child is also removed
-  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Comment> comments;
+    // orphanRemoval means when parent is removed, child is also removed
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

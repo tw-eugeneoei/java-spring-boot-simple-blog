@@ -15,52 +15,56 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/posts")
 public class PostController {
 
-  private final PostService postService; // interface gets injected which leads to loose coupling
+    private final PostService postService; // interface gets injected which leads to loose coupling
 
-  // if class is configured as a spring bean and it has only one constructor, we can omit @Autowired
-  // annotation
-  public PostController(PostService postService) {
-    this.postService = postService;
-  }
+    // if class is configured as a spring bean and it has only one constructor, we can omit
+    // @Autowired
+    // annotation
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
-  @PostMapping
-  public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
-    PostDto post = postService.createPost(postDto);
-    return new ResponseEntity<>(post, HttpStatus.CREATED);
-    // // if you want to set the Location property in response headers
-    // URI location =
-    // ServletUriComponentsBuilder.fromCurrentRequest().path("/{postId}").buildAndExpand(post.getId()).toUri();
-    // return ResponseEntity.created(location).body(post); // this sets "Location" headers of the
-    // new resource
-  }
+    @PostMapping
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
+        PostDto post = postService.createPost(postDto);
+        return new ResponseEntity<>(post, HttpStatus.CREATED);
+        // // if you want to set the Location property in response headers
+        // URI location =
+        // ServletUriComponentsBuilder.fromCurrentRequest().path("/{postId}").buildAndExpand(post.getId()).toUri();
+        // return ResponseEntity.created(location).body(post); // this sets "Location" headers of
+        // the
+        // new resource
+    }
 
-  @GetMapping
-  public ResponseEntity<PostResponse> getPosts(
-      @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_NO, required = false) int pageNo,
-      @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-      @RequestParam(defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-      @RequestParam(defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false)
-          String sortDir) {
-    PostResponse postResponse = postService.getPosts(pageNo, pageSize, sortBy, sortDir);
-    return ResponseEntity.ok(postResponse);
-  }
+    @GetMapping
+    public ResponseEntity<PostResponse> getPosts(
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_NO, required = false) int pageNo,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false)
+                    int pageSize,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_SORT_BY, required = false)
+                    String sortBy,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false)
+                    String sortDir) {
+        PostResponse postResponse = postService.getPosts(pageNo, pageSize, sortBy, sortDir);
+        return ResponseEntity.ok(postResponse);
+    }
 
-  @GetMapping("{postId}")
-  public ResponseEntity<PostDto> getPostById(@PathVariable UUID postId) {
-    PostDto post = postService.getPostById(postId);
-    return ResponseEntity.ok(post);
-  }
+    @GetMapping("{postId}")
+    public ResponseEntity<PostDto> getPostById(@PathVariable UUID postId) {
+        PostDto post = postService.getPostById(postId);
+        return ResponseEntity.ok(post);
+    }
 
-  @PutMapping("{postId}")
-  public ResponseEntity<PostDto> updatePostById(
-      @PathVariable UUID postId, @Valid @RequestBody PostDto postDto) {
-    PostDto post = postService.updatePostById(postId, postDto);
-    return ResponseEntity.ok(post);
-  }
+    @PutMapping("{postId}")
+    public ResponseEntity<PostDto> updatePostById(
+            @PathVariable UUID postId, @Valid @RequestBody PostDto postDto) {
+        PostDto post = postService.updatePostById(postId, postDto);
+        return ResponseEntity.ok(post);
+    }
 
-  @DeleteMapping("{postId}")
-  public ResponseEntity<?> deletePostById(@PathVariable UUID postId) {
-    postService.deletePostById(postId);
-    return ResponseEntity.noContent().build();
-  }
+    @DeleteMapping("{postId}")
+    public ResponseEntity<?> deletePostById(@PathVariable UUID postId) {
+        postService.deletePostById(postId);
+        return ResponseEntity.noContent().build();
+    }
 }

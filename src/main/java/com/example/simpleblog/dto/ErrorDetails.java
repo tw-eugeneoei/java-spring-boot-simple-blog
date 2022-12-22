@@ -26,13 +26,13 @@ package com.example.simpleblog.dto;
 // }
 
 public class ErrorDetails {
-  private String message;
+    private String message;
 
-  public ErrorDetails(String message) {
-    this.message = message;
-  }
+    public ErrorDetails(String message) {
+        this.message = message;
+    }
 
-  public String getMessage() {
-    return message;
-  }
+    public String getMessage() {
+        return message;
+    }
 }

@@ -24,92 +24,92 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 // ResponseEntityExceptionHandler to customise data validation response for Post and Put request
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-  // handle various specific exceptions
-  // @ExceptionHandler(ResourceNotFoundException.class)
-  // public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException
-  // exception, WebRequest webRequest) {
-  //     ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
-  // webRequest.getDescription(false));
-  //     return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-  // }
-  @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<ErrorDetails> handleResourceNotFoundException(
-      ResourceNotFoundException exception) {
-    ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
-    return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-  }
+    // handle various specific exceptions
+    // @ExceptionHandler(ResourceNotFoundException.class)
+    // public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException
+    // exception, WebRequest webRequest) {
+    //     ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+    // webRequest.getDescription(false));
+    //     return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    // }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(
+            ResourceNotFoundException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
 
-  @ExceptionHandler(BlogAPIException.class)
-  public ResponseEntity<ErrorDetails> handleBlogAPIException(BlogAPIException exception) {
-    ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
-    // return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-    return new ResponseEntity<>(errorDetails, exception.getStatus());
-  }
+    @ExceptionHandler(BlogAPIException.class)
+    public ResponseEntity<ErrorDetails> handleBlogAPIException(BlogAPIException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
+        // return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDetails, exception.getStatus());
+    }
 
-  // handles DTO validation for POST and PUT requests
-  @Override
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(
-      MethodArgumentNotValidException exception,
-      HttpHeaders headers,
-      HttpStatus status,
-      WebRequest request) {
-    Map<String, String> errors = new HashMap<>();
-    exception
-        .getBindingResult()
-        .getAllErrors()
-        .forEach(
-            (error) -> {
-              // cast error object to FieldError
-              String fieldName = ((FieldError) error).getField();
-              String fieldMessage = error.getDefaultMessage();
-              errors.put(fieldName, fieldMessage);
-            });
-    return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-  }
+    // handles DTO validation for POST and PUT requests
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException exception,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request) {
+        Map<String, String> errors = new HashMap<>();
+        exception
+                .getBindingResult()
+                .getAllErrors()
+                .forEach(
+                        (error) -> {
+                            // cast error object to FieldError
+                            String fieldName = ((FieldError) error).getField();
+                            String fieldMessage = error.getDefaultMessage();
+                            errors.put(fieldName, fieldMessage);
+                        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 
-  // forbidden
-  // unauthorized
+    // forbidden
+    // unauthorized
 
-  // handle global exceptions
-  @ExceptionHandler(
-      Exception.class) // all exceptions that extend Exception class will be handled here
-  public ResponseEntity<ErrorDetails> handleGlobalException(Exception exception) {
-    System.out.println(">>>>>>>>");
-    System.out.println(exception.getMessage());
-    System.out.println(">>>>>>>>");
-    ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
-    return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-  }
+    // handle global exceptions
+    @ExceptionHandler(
+            Exception.class) // all exceptions that extend Exception class will be handled here
+    public ResponseEntity<ErrorDetails> handleGlobalException(Exception exception) {
+        System.out.println(">>>>>>>>");
+        System.out.println(exception.getMessage());
+        System.out.println(">>>>>>>>");
+        ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-  // Auth exceptions handlers
+    // Auth exceptions handlers
 
-  @ExceptionHandler(AuthenticationException.class)
-  public ResponseEntity<ErrorDetails> handleAuthenticationException(
-      AuthenticationException exception) {
-    System.out.println("@ExceptionHandler >> AuthenticationException >>>>>>>>");
-    System.out.println(exception.getMessage());
-    System.out.println(">>>>>>>>");
-    ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
-    return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
-  }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorDetails> handleAuthenticationException(
+            AuthenticationException exception) {
+        System.out.println("@ExceptionHandler >> AuthenticationException >>>>>>>>");
+        System.out.println(exception.getMessage());
+        System.out.println(">>>>>>>>");
+        ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
+        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+    }
 
-  @ExceptionHandler(BadCredentialsException.class)
-  public ResponseEntity<ErrorDetails> handleBadCredentialsException(
-      BadCredentialsException exception) {
-    System.out.println("@ExceptionHandler >> BadCredentialsException >>>>>>>>");
-    System.out.println(exception.getMessage());
-    System.out.println(">>>>>>>>");
-    ErrorDetails errorDetails = new ErrorDetails(AppConstants.BAD_CREDENTIALS_ERROR_MESSAGE);
-    return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-  }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorDetails> handleBadCredentialsException(
+            BadCredentialsException exception) {
+        System.out.println("@ExceptionHandler >> BadCredentialsException >>>>>>>>");
+        System.out.println(exception.getMessage());
+        System.out.println(">>>>>>>>");
+        ErrorDetails errorDetails = new ErrorDetails(AppConstants.BAD_CREDENTIALS_ERROR_MESSAGE);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 
-  //    @ExceptionHandler(AccessDeniedException.class)
-  //    public ResponseEntity<ErrorDetails> handleAccessDeniedException(AccessDeniedException
-  // exception) {
-  //        System.out.println("@ExceptionHandler >> AccessDeniedException >>>>>>>>");
-  //        System.out.println(exception.getMessage());
-  //        System.out.println(">>>>>>>>");
-  //        ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
-  //        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-  //    }
+    //    @ExceptionHandler(AccessDeniedException.class)
+    //    public ResponseEntity<ErrorDetails> handleAccessDeniedException(AccessDeniedException
+    // exception) {
+    //        System.out.println("@ExceptionHandler >> AccessDeniedException >>>>>>>>");
+    //        System.out.println(exception.getMessage());
+    //        System.out.println(">>>>>>>>");
+    //        ErrorDetails errorDetails = new ErrorDetails(exception.getMessage());
+    //        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    //    }
 }

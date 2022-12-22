@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
 // ElementType.Method, which means it will only work on methods
 @Target(ElementType.METHOD)
 public @interface IsPostOwner {
-  String method() default "unknown";
+    String method() default "unknown";
 }

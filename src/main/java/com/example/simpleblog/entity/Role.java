@@ -13,14 +13,14 @@ import org.hibernate.annotations.Type;
 @NoArgsConstructor
 @Entity
 @Table(
-    name = "roles",
-    uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
+        name = "roles",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class Role {
-  @Id // to indicate that this column is the primary key
-  @Type(type = "uuid-char")
-  @GeneratedValue(generator = "UUID")
-  private UUID id;
+    @Id // to indicate that this column is the primary key
+    @Type(type = "uuid-char")
+    @GeneratedValue(generator = "UUID")
+    private UUID id;
 
-  @Column(nullable = false)
-  private String name;
+    @Column(nullable = false)
+    private String name;
 }

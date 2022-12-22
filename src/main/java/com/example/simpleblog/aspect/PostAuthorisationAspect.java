@@ -16,38 +16,38 @@ import org.springframework.stereotype.Component;
 @Component
 public class PostAuthorisationAspect extends ResourceAuthorisation {
 
-  private final PostRepository postRepository;
+    private final PostRepository postRepository;
 
-  public PostAuthorisationAspect(UserRepository userRepository, PostRepository postRepository) {
-    super(userRepository);
-    this.postRepository = postRepository;
-  }
+    public PostAuthorisationAspect(UserRepository userRepository, PostRepository postRepository) {
+        super(userRepository);
+        this.postRepository = postRepository;
+    }
 
-  //    @Before("execution(* com.example.simpleblog.service.impl.PostServiceImpl.update*(..)) &&
-  // args(postId, ..)")
-  //    public void beforeAnyUpdateAdvice(UUID postId) {
-  //        System.out.println("Aspect language style");
-  //        UUID postOwnerId = getPostOwnerId(postId);
-  //        if (!isOwner(postOwnerId)) {
-  //            throw new BlogAPIException(HttpStatus.FORBIDDEN,
-  // AppConstants.UNAUTHORISED_UPDATE_MESSAGE);
-  //        }
-  //    }
-  //
-  //    @Before("execution(* com.example.simpleblog.service.impl.PostServiceImpl.delete*(..)) &&
-  // args(postId)")
-  //    public void beforeAnyDeleteAdvice(UUID postId) {
-  //        System.out.println("Aspect language style");
-  //        UUID postOwnerId = getPostOwnerId(postId);
-  //        if (!isOwner(postOwnerId)) {
-  //            throw new BlogAPIException(HttpStatus.FORBIDDEN,
-  // AppConstants.UNAUTHORISED_DELETE_MESSAGE);
-  //        }
-  //    }
-  //
-  //    private UUID getPostOwnerId(UUID id) {
-  //        Post post = postRepository.findById(id).orElseThrow(() -> new
-  // ResourceNotFoundException("Post", "id", id));
-  //        return post.getUser().getId();
-  //    }
+    //    @Before("execution(* com.example.simpleblog.service.impl.PostServiceImpl.update*(..)) &&
+    // args(postId, ..)")
+    //    public void beforeAnyUpdateAdvice(UUID postId) {
+    //        System.out.println("Aspect language style");
+    //        UUID postOwnerId = getPostOwnerId(postId);
+    //        if (!isOwner(postOwnerId)) {
+    //            throw new BlogAPIException(HttpStatus.FORBIDDEN,
+    // AppConstants.UNAUTHORISED_UPDATE_MESSAGE);
+    //        }
+    //    }
+    //
+    //    @Before("execution(* com.example.simpleblog.service.impl.PostServiceImpl.delete*(..)) &&
+    // args(postId)")
+    //    public void beforeAnyDeleteAdvice(UUID postId) {
+    //        System.out.println("Aspect language style");
+    //        UUID postOwnerId = getPostOwnerId(postId);
+    //        if (!isOwner(postOwnerId)) {
+    //            throw new BlogAPIException(HttpStatus.FORBIDDEN,
+    // AppConstants.UNAUTHORISED_DELETE_MESSAGE);
+    //        }
+    //    }
+    //
+    //    private UUID getPostOwnerId(UUID id) {
+    //        Post post = postRepository.findById(id).orElseThrow(() -> new
+    // ResourceNotFoundException("Post", "id", id));
+    //        return post.getUser().getId();
+    //    }
 }

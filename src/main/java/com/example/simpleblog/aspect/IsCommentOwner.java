@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface IsCommentOwner {
-  String method() default "unknown";
+    String method() default "unknown";
 }

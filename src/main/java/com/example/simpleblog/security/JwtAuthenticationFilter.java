@@ -17,40 +17,42 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-  @Autowired private JwtTokenProvider jwtTokenProvider;
+    @Autowired private JwtTokenProvider jwtTokenProvider;
 
-  @Autowired private UserDetailsService userDetailsService;
+    @Autowired private UserDetailsService userDetailsService;
 
-  @Override
-  protected void doFilterInternal(
-      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException {
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
-    // get token from http request
-    String token = getTokenFromHeaders(request);
+        // get token from http request
+        String token = getTokenFromHeaders(request);
 
-    // validate token
-    if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
-      // get username from token
-      String userName = jwtTokenProvider.getUsernameFromToken(token);
+        // validate token
+        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+            // get username from token
+            String userName = jwtTokenProvider.getUsernameFromToken(token);
 
-      // load user associated with token from db
-      UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-      UsernamePasswordAuthenticationToken authenticationToken =
-          new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-      authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            // load user associated with token from db
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+            authenticationToken.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request));
 
-      // set user to spring security
-      SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            // set user to spring security
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        }
+        filterChain.doFilter(request, response);
     }
-    filterChain.doFilter(request, response);
-  }
 
-  private String getTokenFromHeaders(HttpServletRequest request) {
-    String bearerToken = request.getHeader("Authorization");
-    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-      return bearerToken.substring(7, bearerToken.length()); // "Bearer <accessToken>"
+    private String getTokenFromHeaders(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7, bearerToken.length()); // "Bearer <accessToken>"
+        }
+        return null;
     }
-    return null;
-  }
 }

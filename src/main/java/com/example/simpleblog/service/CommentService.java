@@ -6,13 +6,13 @@ import com.example.simpleblog.dto.CommentResponse;
 import java.util.UUID;
 
 public interface CommentService {
-  CommentDto createComment(UUID postId, CommentDto comment);
+    CommentDto createComment(UUID postId, CommentDto comment);
 
-  CommentResponse getCommentsByPostId(UUID postId, int pageNo, int pageSize);
+    CommentResponse getCommentsByPostId(UUID postId, int pageNo, int pageSize);
 
-  CommentDto getCommentById(UUID postId, UUID commentId);
+    CommentDto getCommentById(UUID postId, UUID commentId);
 
-  CommentDto updateCommentById(UUID postId, UUID commentId, CommentDto comment);
+    CommentDto updateCommentById(UUID postId, UUID commentId, CommentDto comment);
 
-  void deleteCommentById(UUID postId, UUID commentId);
+    void deleteCommentById(UUID postId, UUID commentId);
 }

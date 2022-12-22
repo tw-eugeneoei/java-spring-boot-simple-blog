@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostResponse {
-  private List<PostDto> results;
-  private int pageNo;
-  private int pageSize;
-  private long totalCount;
-  private long totalPages;
-  private boolean hasNextPage;
+    private List<PostDto> results;
+    private int pageNo;
+    private int pageSize;
+    private long totalCount;
+    private long totalPages;
+    private boolean hasNextPage;
 }
