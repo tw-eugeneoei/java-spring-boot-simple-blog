@@ -1,0 +1,4 @@
+#!/bin/sh
+
+./mvnw spotless:check
+./mvnw spotless:apply

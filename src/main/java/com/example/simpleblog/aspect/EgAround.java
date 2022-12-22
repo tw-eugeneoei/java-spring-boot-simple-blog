@@ -1,3 +1,4 @@
+/* (C)2022 */
 package com.example.simpleblog.aspect;
 
 import java.lang.annotation.ElementType;
@@ -8,5 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface EgAround {
-    String value() default "";
+  String value() default "";
 }

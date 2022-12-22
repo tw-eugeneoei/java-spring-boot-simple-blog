@@ -1,3 +1,4 @@
+/* (C)2022 */
 package com.example.simpleblog;
 
 import org.modelmapper.ModelMapper;
@@ -8,13 +9,12 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class SimpleBlogApplication {
 
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
+  @Bean
+  public ModelMapper modelMapper() {
+    return new ModelMapper();
+  }
 
-	public static void main(String[] args) {
-		SpringApplication.run(SimpleBlogApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(SimpleBlogApplication.class, args);
+  }
 }

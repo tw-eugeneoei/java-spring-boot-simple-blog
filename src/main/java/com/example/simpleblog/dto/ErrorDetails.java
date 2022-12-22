@@ -1,8 +1,7 @@
+/* (C)2022 */
 package com.example.simpleblog.dto;
 
-import java.util.Date;
-
-//public class ErrorDetails {
+// public class ErrorDetails {
 //    private Date date;
 //    private String message;
 //    private String details;
@@ -24,16 +23,16 @@ import java.util.Date;
 //    public String getDetails() {
 //        return details;
 //    }
-//}
+// }
 
 public class ErrorDetails {
-    private String message;
+  private String message;
 
-    public ErrorDetails(String message) {
-        this.message = message;
-    }
+  public ErrorDetails(String message) {
+    this.message = message;
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  public String getMessage() {
+    return message;
+  }
 }
