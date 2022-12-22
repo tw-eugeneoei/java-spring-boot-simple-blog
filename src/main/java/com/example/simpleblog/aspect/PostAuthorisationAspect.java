@@ -12,8 +12,6 @@ import com.example.simpleblog.repository.UserRepository;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
-// import java.util.UUID;
-
 @Aspect
 @Component
 public class PostAuthorisationAspect extends ResourceAuthorisation {
