@@ -39,5 +39,3 @@
 
 - **Join Point**: when to apply the code during programme execution
 - **Pointcut**: a predicate expression for where advice should be applied
-
-
