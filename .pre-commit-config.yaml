@@ -1,7 +1,7 @@
 repos:
     - repo: local
       hooks:
-          - id: formatter
+          - id: spotless-formatter
             name: Spotless
             entry: bash ./scripts/pre-commit-formatter
             language: system
