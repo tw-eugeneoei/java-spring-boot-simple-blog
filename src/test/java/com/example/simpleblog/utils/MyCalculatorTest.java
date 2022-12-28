@@ -8,7 +8,8 @@ import java.util.List;
 import org.junit.jupiter.api.*;
 
 // @DisplayNameGeneration(DisplayNameGenerator.Simple.class)
-// @DisplayNameGeneration(DisplayNameGenerator.IndicativeSentences.class) // test class name and
+// @DisplayNameGeneration(DisplayNameGenerator.IndicativeSentences.class) // test-local class name
+// and
 // method name
 // @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 // @DisplayNameGeneration(DisplayNameGenerator.Standard.class)
@@ -21,7 +22,7 @@ class MyCalculatorTest {
         /*
         - get database connections
         - connect to remote servers
-        - setup test data in db
+        - setup test-local data in db
          */
         System.out.println("@BeforeAll lifecycle\n");
     }
@@ -31,7 +32,7 @@ class MyCalculatorTest {
         /*
         - release database connections
         - disconnect remote servers
-        - cleanup test data in db
+        - cleanup test-local data in db
          */
         System.out.println("@AfterAll lifecycle\n");
     }

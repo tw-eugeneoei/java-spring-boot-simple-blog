@@ -1,0 +1,17 @@
+#!/bin/sh
+
+./mvnw clean test
+./mvnw site -DgenerateReports=false
+
+#test_exit_value=$?
+##$? -eq 0
+#
+#if [ $test_exit_value -eq 1 ]
+#then
+#  echo "Failing tests."
+#  exit 0
+#else
+#  ./mvnw site -DgenerateReports=false
+#  exit 0
+#fi
+
